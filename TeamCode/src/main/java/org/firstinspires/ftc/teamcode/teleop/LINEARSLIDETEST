@@ -1,0 +1,108 @@
+package org.firstinspires.ftc.teamcode.teleop;
+
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+
+@TeleOp(name="LINEARSLIDETEST")
+public class LINEARSLIDETEST extends LinearOpMode {
+    DcMotor LSL;
+    DcMotor LSR;
+    DcMotor AM;
+    int maxExtension = 2000;
+    int armExtension = 2000;
+
+    public void runOpMode() {
+        LSR = hardwareMap.get(DcMotor.class, "LSR");
+        LSL = hardwareMap.get(DcMotor.class, "LSL");
+        AM = hardwareMap.get(DcMotor.class, "AM");
+
+        LSR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LSL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        AM.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LSR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        LSL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        AM.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        waitForStart();
+        while (opModeIsActive()) {
+            if (gamepad1.a){
+                LSR.setPower(0.5);
+                LSL.setPower(0.5);
+            }
+            if (LSR.getCurrentPosition() < maxExtension && LSL.getCurrentPosition() < maxExtension) { //if it is not already stretched
+                if (gamepad1.dpad_up) {
+                    telemetry.update(); //if gamepad is pressed, turn on motors
+                    LSR.setPower(0.5);
+                    LSL.setPower(0.5);
+                    telemetry.addData("left position", LSL.getCurrentPosition());
+                    telemetry.addData("right position", LSR.getCurrentPosition());
+                    telemetry.update();
+                } else {
+                    if (LSR.getCurrentPosition() != 0) {
+                        LSR.setPower(0.2);
+                        LSL.setPower(0.2);
+                        telemetry.addData("left position", LSL.getCurrentPosition());
+                        telemetry.addData("right position", LSR.getCurrentPosition());
+                        telemetry.update();
+                    } else {
+                        LSR.setPower(0.2);
+                        LSL.setPower(0.2);//if it isn't, turn off
+                        LSR.setPower(0.2);
+                        LSL.setPower(0.2); //if it is at max position, set power to 0
+                        telemetry.addData("left position", LSL.getCurrentPosition());
+                        telemetry.addData("right position", LSR.getCurrentPosition());
+                        telemetry.update();
+                    }
+                    if (LSL.getCurrentPosition() > 0) { //if they are not at position 0
+                        if (gamepad1.dpad_down) {
+                            LSR.setPower(-0.5); //if you press a, will retract the slides.
+                            LSL.setPower(-0.5);
+                            telemetry.addData("left position", LSL.getCurrentPosition());
+                            telemetry.addData("right position", LSR.getCurrentPosition());
+                            telemetry.update();
+                        } else {
+                            LSR.setPower(0.2); //if it isn't, turn off
+                            LSL.setPower(0.2);
+                            telemetry.addData("left position", LSL.getCurrentPosition());
+                            telemetry.addData("right position", LSR.getCurrentPosition());
+                            telemetry.update();
+                        }
+
+                    }
+                }
+
+                //horizontal linear slides <-x b->
+                if (AM.getCurrentPosition() < armExtension) {
+                    if (gamepad1.dpad_right) {
+                        AM.setPower(0.6);
+                        telemetry.addData("arm motor position", AM.getCurrentPosition());
+                        telemetry.update();
+                    } else {
+                        if (AM.getCurrentPosition() != 0) {
+                            AM.setPower(0.05);
+                            telemetry.addData("arm motor position", AM.getCurrentPosition());
+                            telemetry.update();
+                        } else {
+                            AM.setPower(0);
+                            telemetry.addData("arm motor position", AM.getCurrentPosition());
+                            telemetry.update();
+                        }
+                    }
+                }
+                if (AM.getCurrentPosition() < 0) {
+                    if (gamepad1.dpad_left) {
+                        AM.setPower(-0.5);
+                        telemetry.addData("arm motor position", AM.getCurrentPosition());
+                        telemetry.update();
+                    } else {
+                        AM.setPower(0.05);
+                        telemetry.addData("arm motor position", AM.getCurrentPosition());
+                        telemetry.update();
+                    }
+                }
+            }
+        }
+    }
+}
