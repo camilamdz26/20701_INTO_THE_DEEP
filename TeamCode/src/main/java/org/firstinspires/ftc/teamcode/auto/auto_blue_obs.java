@@ -10,6 +10,8 @@ import org.firstinspires.ftc.teamcode.movement;
 
 @Config
 @Autonomous(name="auto_blue_obs")
+
+public static double 
 public class auto_blue_obs extends LinearOpMode {
     //sets up motors
     DcMotor FR;
