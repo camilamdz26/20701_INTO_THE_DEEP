@@ -1,0 +1,110 @@
+package org.firstinspires.ftc.teamcode.auto;
+//autonomous red from observation zone - designed to place pixel in net zone and park in observation zone
+
+import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.teamcode.movement;
+
+@Config
+@Autonomous(name="auto_red_obs")
+
+public static double = a01_d = 0;
+public static double = a02_r = 0;
+public static double = a03_d = 0;
+public static double = a04_r = 0;
+public static double = a05_d = 0;
+public static double = a06_ls = 0;
+public static double = a07_d = 0;
+
+public static double = a09_d = 0;
+public static double = a10_ls = 0;
+public static double = a11_r = 0;
+public static double = a12_d = 0;
+public static double = a13_r = 0;
+public static double = a14_d = 0;
+
+public static double = a16_d = 0;
+public static double = a17_r = 0;
+public static double = a18_ls = 0;
+public static double = a19_d = 0;
+
+public static double = a21_d = 0;
+public static double = a22_ls = 0;
+public static double = a23_r = 0;
+public static double = a24_d = 0;
+public static double = a25_d = 0;
+    
+public class auto_red_obs extends LinearOpMode {
+    //sets up motors
+    DcMotor FR;
+    DcMotor FL;
+    DcMotor BR;
+    DcMotor BL;
+
+    @Override
+    public void runOpMode(){ //sets motors to correct modes and directions
+        FL = hardwareMap.get(DcMotor.class, "FL");
+        FR = hardwareMap.get(DcMotor.class,"FR");
+        BL = hardwareMap.get(DcMotor.class, "BL");
+        BR = hardwareMap.get(DcMotor.class, "BR");
+
+        FL.setDirection(DcMotor.Direction.REVERSE);
+        FR.setDirection(DcMotor.Direction.FORWARD);
+        BL.setDirection(DcMotor.Direction.REVERSE);
+        BR.setDirection(DcMotor.Direction.FORWARD);
+
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+        waitForStart();
+        //code to run autonomous
+
+        //places pixel in net zone
+        //movement.forward(20, telemetry, BL, BR, FL, FR);
+        //movement.left(180, telemetry, BL, BR, FL, FR);
+        //movement.rotationLeft(155, telemetry,BL, BR, FL, FR);
+        //movement.forward(30, telemetry, BL, BR, FL, FR);
+        //movement.backward(30, telemetry, BL, BR, FL, FR);
+        //parks the robot in observation zone
+        //movement.left(250, telemetry, BL, BR, FL, FR);
+        //movement.forward(50, telemetry, BL, BR, FL, FR);
+
+        movement.forward(a01_d, telemetry, BL, BR, FL, FR);
+        movement.rotationLeft(a02_r, telemetry, BL, BR, FL, FR);
+        movement.forward(a03_d, telemetry, BL, BR, FL, FR);
+        movement.rotationLeft(a04_r, telemetry, BL, BR, FL, FR);
+        movement.forward(a05_d, telemetry, BL, BR, FL, FR);
+        movement.LS_up(a06_ls, telemetry, LSL, LSR);
+        movement.forward(a07_d, telemetry, BL, BR, FL, FR);
+        //GK.setPower(1) //we need to import this at the top
+        //wait
+        //GK.setPower(0)
+        movement.backward(a09_d, telemetry, BL, BR, FL, FR);
+        movement.LS_down(a10_ls, telemetry, LSL, LSR);
+        movement.rotationLeft(a11_r, telemetry, BL, BR, FL, FR);
+        movement.backward(a12_d, telemetry, BL, BR, FL, FR);
+        movement.rotationRight(a13_r, telemetry, BL, BR, FL, FR);
+        movement.forward(a14_d, telemetry, BL, BR, FL, FR);
+        //intake
+        //stop intake
+        movement.left(a16_d, telemetry, BL, BR, FL, FR);
+        movement.rotationLeft(a17_r, telemetry, BL, BR, FL, FR);
+        movement.LS_up(a18_ls, telemetry, LSL, LSR);
+        movement.forward(a19_d, telemetry, BL, BR, FL, FR);
+        //GK.setPower(1) //we need to import this at the top
+        //wait
+        //GK.setPower(0)
+        movement.backward(a21_d, telemetry, BL, BR, FL, FR);
+        movement.LS_down(a22_ls, telemetry, LSL, LSR);
+        movement.rotationRight(a23_r, telemetry, BL, BR, FL, FR);
+        movement.backward(a24_d, telemetry, BL, BR, FL, FR);
+        movement.left(a25_d, telemetry, BL, BR, FL, FR); //parked
+        
+    }
+}
