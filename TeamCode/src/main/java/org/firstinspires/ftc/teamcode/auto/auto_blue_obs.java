@@ -10,6 +10,15 @@ import org.firstinspires.ftc.teamcode.movement;
 
 @Config
 @Autonomous(name="auto_blue_obs")
+
+public static double a01_d = 0;
+public static double a02_d = 0;
+public static double a03_r = 0;
+public static double a04_d = 0;
+public static double a05_d = 0;
+public static double a06_d = 0;
+public static double a07_d = 0;
+
 public class auto_blue_obs extends LinearOpMode {
     //sets up motors
     DcMotor FR;
@@ -39,12 +48,20 @@ public class auto_blue_obs extends LinearOpMode {
         waitForStart();
         //actual code to move: using movement.java program
 
-        movement.forward(20, telemetry, BL, BR, FL, FR);
-        movement.left(175, telemetry, BL, BR, FL, FR);
-        movement.rotationLeft(162, telemetry,BL, BR, FL, FR);
-        movement.forward(2, telemetry, BL, BR, FL, FR);
-        movement.backward(20, telemetry, BL, BR, FL, FR);
-        movement.left(250, telemetry, BL, BR, FL, FR);
-        movement.forward(22, telemetry, BL, BR, FL, FR);
+        //movement.forward(20, telemetry, BL, BR, FL, FR);
+        //movement.left(175, telemetry, BL, BR, FL, FR);
+        //movement.rotationLeft(162, telemetry,BL, BR, FL, FR);
+        //movement.forward(2, telemetry, BL, BR, FL, FR);
+        //movement.backward(20, telemetry, BL, BR, FL, FR);
+        //movement.left(250, telemetry, BL, BR, FL, FR);
+        //movement.forward(22, telemetry, BL, BR, FL, FR);
+
+        movement.forward(a01_d, telemetry, BL, BR, FL, FR);
+        movement.left(a02_d, telemetry, BL, BR, FL, FR);
+        movement.rotationLeft(a03_r, telemetry,BL, BR, FL, FR);
+        movement.forward(a04_d, telemetry, BL, BR, FL, FR);
+        movement.backward(a05_d, telemetry, BL, BR, FL, FR);
+        movement.left(a06_d, telemetry, BL, BR, FL, FR);
+        movement.forward(a07_d, telemetry, BL, BR, FL, FR);
     }
 }
