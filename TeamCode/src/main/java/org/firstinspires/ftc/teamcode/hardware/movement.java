@@ -27,10 +27,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        FR.setPower(.5);
-        FL.setPower(.5);
-        BL.setPower(.5);
-        BR.setPower(.5);
+        FR.setPower(.65);
+        FL.setPower(.65);
+        BL.setPower(.65);
+        BR.setPower(.65);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", FL.getCurrentPosition());
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -54,10 +54,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) FR).setVelocity(100);
-        ((DcMotorEx) FL).setVelocity(100);
-        ((DcMotorEx) BL).setVelocity(100);
-        ((DcMotorEx) BR).setVelocity(100);
+        FR.setPower(.65);
+        FL.setPower(.65);
+        BL.setPower(.65);
+        BR.setPower(.65);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", "forward...");
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -81,10 +81,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) FR).setVelocity(-200);
-        ((DcMotorEx) FL).setVelocity(-200);
-        ((DcMotorEx) BL).setVelocity(-200);
-        ((DcMotorEx) BR).setVelocity(-200);
+        FR.setPower(-.65);
+        FL.setPower(-.65);
+        BL.setPower(-.65);
+        BR.setPower(-.65);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", "backward");
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -108,10 +108,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        ((DcMotorEx) FR).setVelocity(-200);
-        ((DcMotorEx) FL).setVelocity(200);
-        ((DcMotorEx) BL).setVelocity(200);
-        ((DcMotorEx) BR).setVelocity(200);
+        FR.setPower(-.65);
+        FL.setPower(.65);
+        BL.setPower(.65);
+        BR.setPower(.65);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("going backwards: bl", BL.getCurrentPosition());
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -143,10 +143,10 @@ public class Movement {
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set velocity for a smooth turn
-        ((DcMotorEx) FR).setVelocity(500);
-        ((DcMotorEx) FL).setVelocity(500);
-        ((DcMotorEx) BL).setVelocity(500);
-        ((DcMotorEx) BR).setVelocity(500);
+        FR.setPower(.65);
+        FL.setPower(.65);
+        BL.setPower(.65);
+        BR.setPower(.65);
 
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("Rotating Left", "In Progress");
@@ -179,10 +179,10 @@ public class Movement {
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set velocity for a smooth turn
-        ((DcMotorEx) FR).setVelocity(500);
-        ((DcMotorEx) FL).setVelocity(500);
-        ((DcMotorEx) BL).setVelocity(500);
-        ((DcMotorEx) BR).setVelocity(500);
+        FR.setPower(.65);
+        FL.setPower(.65);
+        BL.setPower(.65);
+        BR.setPower(.65);
 
         // Wait until the robot reaches the target position
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
@@ -214,8 +214,8 @@ public class Movement {
 
         ((DcMotorEx) LSL).setVelocity(1000);  // Adjust velocity for a smooth motion
         ((DcMotorEx) LSR).setVelocity(1000);
-        LSL.setPower(0.5);
-        LSR.setPower(0.5);
+        LSL.setPower(0.75);
+        LSR.setPower(0.75);
 
         while (LSL.isBusy() && LSR.isBusy()) {
             telemetry.addData("left position", LSL.getCurrentPosition());
@@ -284,9 +284,7 @@ public class Movement {
 
     public static void LS_down(Telemetry telemetry, DcMotor LSL, DcMotor LSR) {
         // Reset encoders before starting
-        reset_slides(LSL, LSR);
         on = false;
-        telemetry.addData("on?", on);
         telemetry.addData("going down...", LSL.getCurrentPosition());
         telemetry.update();
         LSL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -297,8 +295,6 @@ public class Movement {
         LSR.setTargetPosition((int) 0);
         LSL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         LSR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        ((DcMotorEx) LSL).setVelocity(-1000);
-        ((DcMotorEx) LSR).setVelocity(-1000);
         LSL.setPower(-0.5);
         LSR.setPower(-0.5);
 
