@@ -1,0 +1,67 @@
+package org.firstinspires.ftc.teamcode.auto;
+
+//import com.acmerobotics.dashboard.config.Config;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.hardware.Movement;
+@Autonomous(name = "Auto_Obs")
+public class Auto_Obs extends LinearOpMode{
+        //sets up motors
+        DcMotor FR;
+        DcMotor FL;
+        DcMotor BR;
+        DcMotor BL;
+        DcMotor LSL;
+        DcMotor LSR;
+        DcMotor AM;
+        CRServo GK;
+        Servo IR;
+
+
+        @Override
+        public void runOpMode() { //sets motors to correct modes and directions
+            FL = hardwareMap.get(DcMotor.class, "FL");
+            FR = hardwareMap.get(DcMotor.class, "FR");
+            BL = hardwareMap.get(DcMotor.class, "BL");
+            BR = hardwareMap.get(DcMotor.class, "BR");
+
+            FL.setDirection(DcMotor.Direction.FORWARD);
+            FR.setDirection(DcMotor.Direction.REVERSE);
+            BL.setDirection(DcMotor.Direction.FORWARD);
+            BR.setDirection(DcMotor.Direction.FORWARD);
+
+            FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            LSL = hardwareMap.get(DcMotor.class, "LSL");
+            LSR = hardwareMap.get(DcMotor.class, "LSR");
+            AM = hardwareMap.get(DcMotor.class, "AM");
+            GK = hardwareMap.get(CRServo.class, "GK");
+            IR = hardwareMap.get(Servo.class, "IR");
+
+            LSL.setDirection(DcMotor.Direction.FORWARD);
+            LSR.setDirection(DcMotor.Direction.REVERSE);
+            AM.setDirection(DcMotor.Direction.FORWARD);
+
+
+            LSL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            LSR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            AM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+            waitForStart();
+            Movement.left(20, telemetry, BL, BR, FL, FR);
+            Movement.forward(60, telemetry, BL, BR, FL, FR);
+            Movement.right(25,telemetry, BL, BR, FL, FR);
+            Movement.backward(55, telemetry, BL, BR, FL, FR);
+            Movement.forward(5,telemetry, BL, BR, FL, FR);
+            Movement.right(20, telemetry, BL, BR, FL, FR);
+            Movement.backward(5, telemetry, BL, BR, FL, FR);
+        }
+    }
