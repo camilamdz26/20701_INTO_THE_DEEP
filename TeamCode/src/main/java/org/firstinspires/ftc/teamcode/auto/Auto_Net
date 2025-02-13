@@ -1,0 +1,140 @@
+package org.firstinspires.ftc.teamcode.auto;
+
+//import com.acmerobotics.dashboard.config.Config;
+import static org.firstinspires.ftc.teamcode.hardware.Movement.LS_down;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.hardware.Movement;
+
+@Autonomous(name = "Auto_Net")
+public class Auto_Net extends LinearOpMode {
+    public static double a01_bd = 30;
+    public static double a02_rr = 37;
+    public static double a03_fd = 23;
+    //public static double a04_lsu = 0; LINEAR SLIDES UP
+    public static double a05_fd = 10;
+    public static double a06_up = 12250;
+    //RELEASING SAMPLE
+    public static double a07_bd = 10;
+    //public static double a08_lsd = 0; LINEAR SLIDES DOWN
+
+    public static double a09_rr = 30;
+    public static double a10_mr = 5;
+    public static double a11_fd = 3;
+
+    //intaking sample
+    public static double a12_ml = 8;
+    //public static double a13_rr = 0;
+    public static double a13_rl = 45;
+
+    public static double a16_d = 0;
+    public static double a17_r = 0;
+    public static double a18_ls = 0;
+    public static double a19_d = 0;
+
+    public static double a21_d = 0;
+    public static double a22_ls = 0;
+    public static double a23_r = 0;
+    public static double a24_d = 0;
+    public static double a25_d = 0;
+
+
+    //sets up motors
+    DcMotor FR;
+    DcMotor FL;
+    DcMotor BR;
+    DcMotor BL;
+    DcMotor LSL;
+    DcMotor LSR;
+    DcMotor AM;
+    CRServo GK;
+    Servo IR;
+
+
+    @Override
+    public void runOpMode() { //sets motors to correct modes and directions
+        FL = hardwareMap.get(DcMotor.class, "FL");
+        FR = hardwareMap.get(DcMotor.class, "FR");
+        BL = hardwareMap.get(DcMotor.class, "BL");
+        BR = hardwareMap.get(DcMotor.class, "BR");
+
+        FL.setDirection(DcMotor.Direction.FORWARD);
+        FR.setDirection(DcMotor.Direction.REVERSE);
+        BL.setDirection(DcMotor.Direction.FORWARD);
+        BR.setDirection(DcMotor.Direction.FORWARD);
+
+        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        LSL = hardwareMap.get(DcMotor.class, "LSL");
+        LSR = hardwareMap.get(DcMotor.class, "LSR");
+        AM = hardwareMap.get(DcMotor.class, "AM");
+        GK = hardwareMap.get(CRServo.class, "GK");
+        IR = hardwareMap.get(Servo.class, "IR");
+
+        LSL.setDirection(DcMotor.Direction.FORWARD);
+        LSR.setDirection(DcMotor.Direction.REVERSE);
+        AM.setDirection(DcMotor.Direction.FORWARD);
+
+
+        LSL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        LSR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        AM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+        waitForStart();
+
+        Movement.backward(a01_bd, telemetry, BL, BR, FL, FR);
+        Movement.rotateRight(a02_rr, telemetry, BL, BR, FL, FR);
+        Movement.forward(a03_fd, telemetry, BL, BR, FL, FR);
+        Movement.LS_up(a06_up, telemetry, LSL, LSR);
+        LSL.setPower(0.01);
+        LSR.setPower(0.01);
+        IR.setPosition(1);
+        //Movement.forward(a05_fd, telemetry, BL, BR, FL, FR);
+
+        GK.setPower(-1);
+        sleep(3000);
+        IR.setPosition(-1);
+        LS_down(telemetry, LSL, LSR);
+        //GK.setPower(1) //we need to import this at the top
+        //wait                  releasing sample
+        //GK.setPower(0)
+       /* Movement.backward(a07_bd, telemetry, BL, BR, FL, FR);
+        Movement.LS_down(telemetry, LSL, LSR);
+        Movement.rotateRight(a09_rr, telemetry, BL, BR, FL, FR);
+
+        Movement.right(a10_mr, telemetry, BL, BR, FL, FR);
+        Movement.forward (a11_fd, telemetry, LSL, LSR);
+        //GK.setPower(1) //we need to import this at the top
+        //wait                  intaking the sample
+        //GK.setPower(0)
+        Movement.left(a12_ml, telemetry, BL, BR, FL, FR);
+        Movement.rotateLeft(a13_rl, telemetry, BL, BR, FL, FR);
+        Movement.forward(a15_d, telemetry, BL, BR, FL, FR);
+        //intake
+        //stop intake
+        Movement.left(a17_d, telemetry, BL, BR, FL, FR);
+        Movement.rotateLeft(a18_r, telemetry, BL, BR, FL, FR);
+        //Movement.LS_up(a19_ls, telemetry, LSL, LSR);
+        Movement.forward(a20_d, telemetry, BL, BR, FL, FR);
+        //GK.setPower(1) //we need to import this at the top
+        //wait
+        //GK.setPower(0)
+        Movement.backward(a22_d, telemetry, BL, BR, FL, FR);
+        //Movement.LS_down(a23_ls, telemetry, LSL, LSR);
+        Movement.rotateRight(a24_r, telemetry, BL, BR, FL, FR);
+        Movement.backward(a25_d, telemetry, BL, BR, FL, FR);
+        Movement.left(a26_d, telemetry, BL, BR, FL, FR); //parked
+*/
+    }
+}
