@@ -1,76 +1,127 @@
-package org.firstinspires.ftc.teamcode.teleop;
+package org.firstinspires.ftc.teamcode.hardware;
 
-import static org.firstinspires.ftc.teamcode.hardware.Movement.AM_in;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.LS_down;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.LS_up;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.backward;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.forward;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.left;
 import static org.firstinspires.ftc.teamcode.hardware.Movement.motor_telemetry;
-import static org.firstinspires.ftc.teamcode.hardware.Movement.on;
 import static org.firstinspires.ftc.teamcode.hardware.Movement.reset_encoders;
-import static org.firstinspires.ftc.teamcode.teleop.Movement1.AM_out;
-import static org.firstinspires.ftc.teamcode.teleop.Movement1.LS_down;
+import static org.firstinspires.ftc.teamcode.hardware.Movement.reset_slides;
 
-import com.acmerobotics.dashboard.config.Config;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.hardware.FSM_DRIVE;
-import org.firstinspires.ftc.teamcode.hardware.Movement;
 
-@Config
-@Autonomous
-public class TEST extends LinearOpMode {
-    DcMotor LSL;
-    DcMotor LSR;
-    DcMotor AM;
-    DcMotor FR;
-    DcMotor FL;
-    DcMotor BR;
-    DcMotor BL;
-    CRServo GK;
-    public boolean yes = true;
-
-    public void runOpMode(){
-        LSL = hardwareMap.get(DcMotor.class, "LSL");
-        LSR = hardwareMap.get(DcMotor.class, "LSR");
-        AM = hardwareMap.get(DcMotor.class, "AM");
-        GK = hardwareMap.get(CRServo.class, "GK");
-
-        LSL.setDirection(DcMotor.Direction.FORWARD);
-        LSR.setDirection(DcMotorSimple.Direction.REVERSE);
-        AM.setDirection(DcMotor.Direction.FORWARD);
+public class FSM_DRIVE {
+    static double rotations;
+    static boolean RUN = false;
+    static boolean LS = false;
 
 
-        LSL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        LSR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        AM.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        FL = hardwareMap.get(DcMotor.class, "FL");
-        FR = hardwareMap.get(DcMotor.class,"FR");
-        BL = hardwareMap.get(DcMotor.class, "BL");
-        BR = hardwareMap.get(DcMotor.class, "BR");
-
-        FR.setDirection(DcMotor.Direction.REVERSE);
-        BR.setDirection(DcMotor.Direction.FORWARD);
-        BL.setDirection(DcMotor.Direction.FORWARD);
-        FL.setDirection(DcMotor.Direction.FORWARD);
-
-
-        FL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        FR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        BR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        waitForStart();
-        FSM_DRIVE.forward(10, telemetry, BL, BR, FL, FR);
-        FSM_DRIVE.LS_up(1000, telemetry, LSL, LSR);
-        FSM_DRIVE.stop(telemetry, BL, BR, FL, FR, LSL, LSR);
-
+    public static void forward(double distance, Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR){
+        reset_encoders(BL, BR, FL, FR);
+        rotations = distance * 21.74;
+        FR.setTargetPosition((int) rotations);
+        FL.setTargetPosition((int) rotations);
+        BL.setTargetPosition((int) rotations);
+        BR.setTargetPosition((int) -rotations);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+        BL.setPower(0.5);
+        BR.setPower(0.5);
+        RUN = true;
     }
-}
+
+    public static void backward(double distance, Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR){
+        reset_encoders(BL, BR, FL, FR);
+        rotations = distance * 21.74;
+        FR.setTargetPosition((int) -rotations);
+        FL.setTargetPosition((int) -rotations);
+        BL.setTargetPosition((int) -rotations);
+        BR.setTargetPosition((int) rotations);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+        BL.setPower(0.5);
+        BR.setPower(0.5);
+        RUN = true;
+    }
+
+    public static void left(double distance, Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR){
+        reset_encoders(BL, BR, FL, FR);
+        rotations = distance * 21.74;
+        FR.setTargetPosition((int) rotations);
+        FL.setTargetPosition((int) -rotations);
+        BL.setTargetPosition((int) rotations);
+        BR.setTargetPosition((int) rotations);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+        BL.setPower(0.5);
+        BR.setPower(0.5);
+        RUN = true;
+    }
+
+    public static void right(double distance, Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR){
+        reset_encoders(BL, BR, FL, FR);
+        rotations = distance * 21.74;
+        FR.setTargetPosition((int) -rotations);
+        FL.setTargetPosition((int) rotations);
+        BL.setTargetPosition((int) -rotations);
+        BR.setTargetPosition((int) -rotations);
+        BL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        FL.setPower(0.5);
+        FR.setPower(0.5);
+        BL.setPower(0.5);
+        BR.setPower(0.5);
+        RUN = true;
+    }
+
+    public static void LS_up(double ticks, Telemetry telemetry, DcMotor LSL, DcMotor LSR) {
+        // Reset encoders before starting
+        LSL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LSR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        LSL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        LSR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        telemetry.addData("lsl target", LSL.getTargetPosition());
+        telemetry.addData("lsr target", LSR.getTargetPosition());
+
+
+        LSL.setTargetPosition((int) ticks);   // Left slide
+        LSR.setTargetPosition((int) ticks);   // Right slide
+
+        LSL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LSR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        LSL.setPower(1);
+        LSR.setPower(1);
+    }
+
+
+    public static void stop(Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR, DcMotor LSL, DcMotor LSR){
+        while (BL.isBusy() || BR.isBusy() || FL.isBusy() || FR.isBusy() || LSL.isBusy() || LSR.isBusy()) {
+            telemetry.addData("Drive", FR.getCurrentPosition());
+            telemetry.addData("Slides", LSL.getCurrentPosition());
+            telemetry.update();
+        }
+        FL.setPower(0);
+        FR.setPower(0);
+        BL.setPower(0);
+        BR.setPower(0);
+        reset_encoders(BL, BR, FL, FR);
+
+        // Stop the slide motors
+        LSL.setPower(0);
+        LSR.setPower(0);
+        reset_slides(LSL, LSR);
+    }
+    }
