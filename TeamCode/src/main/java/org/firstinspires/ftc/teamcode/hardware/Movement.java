@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode.hardware;
 
 import static android.os.SystemClock.sleep;
 
+import static java.lang.Math.abs;
+
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -27,10 +29,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        FR.setPower(.65);
-        FL.setPower(.65);
-        BL.setPower(.65);
-        BR.setPower(.65);
+        FR.setPower(.85);
+        FL.setPower(.85);
+        BL.setPower(.85);
+        BR.setPower(.85);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", FL.getCurrentPosition());
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -54,10 +56,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        FR.setPower(.65);
-        FL.setPower(.65);
-        BL.setPower(.65);
-        BR.setPower(.65);
+        FR.setPower(.85);
+        FL.setPower(.85);
+        BL.setPower(.85);
+        BR.setPower(.85);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", "forward...");
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -71,8 +73,8 @@ public class Movement {
         reset_encoders(BL, BR, FL, FR);
         rotations = distance * 21.74;
         // SET TARGET POSITION
-        FR.setTargetPosition((int) rotations);
-        FL.setTargetPosition((int) -rotations);
+        FR.setTargetPosition((int) -rotations);
+        FL.setTargetPosition((int) rotations);
         BL.setTargetPosition((int) -rotations);
         BR.setTargetPosition((int) -rotations);
         // RUN TO POSITION
@@ -81,10 +83,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        FR.setPower(-.65);
-        FL.setPower(-.65);
-        BL.setPower(-.65);
-        BR.setPower(-.65);
+        FR.setPower(-.85);
+        FL.setPower(.85);
+        BL.setPower(-.85);
+        BR.setPower(-.85);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("function", "backward");
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -108,10 +110,10 @@ public class Movement {
         FL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         FR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         // POWER (left slide)
-        FR.setPower(-.65);
-        FL.setPower(.65);
-        BL.setPower(.65);
-        BR.setPower(.65);
+        FR.setPower(-.85);
+        FL.setPower(.85);
+        BL.setPower(.85);
+        BR.setPower(.85);
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("going backwards: bl", BL.getCurrentPosition());
             motor_telemetry(telemetry, BL, BR, FL, FR);
@@ -143,10 +145,10 @@ public class Movement {
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set velocity for a smooth turn
-        FR.setPower(.65);
-        FL.setPower(.65);
-        BL.setPower(.65);
-        BR.setPower(.65);
+        FR.setPower(.85);
+        FL.setPower(.85);
+        BL.setPower(.85);
+        BR.setPower(.85);
 
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
             telemetry.addData("Rotating Left", "In Progress");
@@ -179,10 +181,10 @@ public class Movement {
         BR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         // Set velocity for a smooth turn
-        FR.setPower(.65);
-        FL.setPower(.65);
-        BL.setPower(.65);
-        BR.setPower(.65);
+        FR.setPower(.85);
+        FL.setPower(.85);
+        BL.setPower(.85);
+        BR.setPower(.85);
 
         // Wait until the robot reaches the target position
         while (BL.isBusy() && BR.isBusy() && FL.isBusy() && FR.isBusy()) {
@@ -214,8 +216,8 @@ public class Movement {
 
         ((DcMotorEx) LSL).setVelocity(1000);  // Adjust velocity for a smooth motion
         ((DcMotorEx) LSR).setVelocity(1000);
-        LSL.setPower(0.75);
-        LSR.setPower(0.75);
+        LSL.setPower(1);
+        LSR.setPower(1);
 
         while (LSL.isBusy() && LSR.isBusy()) {
             telemetry.addData("left position", LSL.getCurrentPosition());
@@ -293,10 +295,6 @@ public class Movement {
         telemetry.addData("right position", LSR.getCurrentPosition());
         LSL.setTargetPosition((int) 0);
         LSR.setTargetPosition((int) 0);
-        LSL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        LSR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        LSL.setPower(-0.5);
-        LSR.setPower(-0.5);
 
         while (LSL.isBusy() || LSR.isBusy()) {
             telemetry.addData("Lowering", "Left: %d, Right: %d", LSL.getCurrentPosition(), LSR.getCurrentPosition());
@@ -374,6 +372,16 @@ public class Movement {
         BR.setPower(0);
         FL.setPower(0);
         FR.setPower(0);
+    }
+
+    public static void position(Telemetry telemetry, DcMotor BL, DcMotor BR, DcMotor FL, DcMotor FR){
+        int pos1 = abs(BR.getCurrentPosition()) + abs(BL.getCurrentPosition()) + abs(FL.getCurrentPosition()) + abs(FR.getCurrentPosition());
+        int pos = pos1/4;
+    }
+
+    public static void slidepos(Telemetry telemetry, DcMotor LSL, DcMotor LSR){
+        int pos2 = abs(LSL.getCurrentPosition()) + abs(LSR.getCurrentPosition());
+        int spos = pos2/2;
     }
 
 }
