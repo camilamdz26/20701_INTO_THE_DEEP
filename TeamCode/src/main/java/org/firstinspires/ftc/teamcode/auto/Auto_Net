@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.auto;
 
 //import com.acmerobotics.dashboard.config.Config;
 import static org.firstinspires.ftc.teamcode.hardware.Movement.LS_down;
+import static org.firstinspires.ftc.teamcode.teleop.Movement1.AM_in;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,16 +10,17 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.hardware.FSM_DRIVE;
 import org.firstinspires.ftc.teamcode.hardware.Movement;
 
 @Autonomous(name = "Auto_Net")
 public class Auto_Net extends LinearOpMode {
     public static double a01_bd = 30;
     public static double a02_rr = 37;
-    public static double a03_fd = 23;
+    public static double a03_fd = 24;
     //public static double a04_lsu = 0; LINEAR SLIDES UP
     public static double a05_fd = 10;
-    public static double a06_up = 12250;
+    public static double a06_up = 7000;
     //RELEASING SAMPLE
     public static double a07_bd = 10;
     //public static double a08_lsd = 0; LINEAR SLIDES DOWN
@@ -52,8 +54,13 @@ public class Auto_Net extends LinearOpMode {
     DcMotor LSL;
     DcMotor LSR;
     DcMotor AM;
-    CRServo GK;
-    Servo IR;
+    Servo CL;
+    Servo RT;
+
+    public static double cl_up = 0.85;
+    public static double cl_down = 0.5;
+    public static double cl_open = 1;
+    public static double cl_close = 0;
 
 
     @Override
@@ -62,6 +69,9 @@ public class Auto_Net extends LinearOpMode {
         FR = hardwareMap.get(DcMotor.class, "FR");
         BL = hardwareMap.get(DcMotor.class, "BL");
         BR = hardwareMap.get(DcMotor.class, "BR");
+        CL = hardwareMap.get(Servo.class, "CL");
+        RT = hardwareMap.get(Servo.class, "RT");
+
 
         FL.setDirection(DcMotor.Direction.FORWARD);
         FR.setDirection(DcMotor.Direction.REVERSE);
@@ -76,12 +86,10 @@ public class Auto_Net extends LinearOpMode {
         LSL = hardwareMap.get(DcMotor.class, "LSL");
         LSR = hardwareMap.get(DcMotor.class, "LSR");
         AM = hardwareMap.get(DcMotor.class, "AM");
-        GK = hardwareMap.get(CRServo.class, "GK");
-        IR = hardwareMap.get(Servo.class, "IR");
 
         LSL.setDirection(DcMotor.Direction.FORWARD);
         LSR.setDirection(DcMotor.Direction.REVERSE);
-        AM.setDirection(DcMotor.Direction.FORWARD);
+        AM.setDirection(DcMotor.Direction.REVERSE);
 
 
         LSL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -99,13 +107,64 @@ public class Auto_Net extends LinearOpMode {
         Movement.LS_up(a06_up, telemetry, LSL, LSR);
         LSL.setPower(0.01);
         LSR.setPower(0.01);
-        IR.setPosition(1);
-        //Movement.forward(a05_fd, telemetry, BL, BR, FL, FR);
+        RT.setPosition(cl_up);
+        sleep(1000);
+        CL.setPosition(0);
+        Movement.backward(3, telemetry, BL, BR, FL, FR);
+        RT.setPosition(cl_down);
+        CL.setPosition(1);
+        Movement.LS_down(telemetry, LSL, LSR);
+        Movement.backward(15, telemetry, BL, BR, FL, FR);
+        Movement.rotateRight(90, telemetry, BL, BR, FL, FR);
+        Movement.AM_out(500, telemetry, AM);
+        sleep(500);
+        CL.setPosition(0);
+        sleep(500);
+        Movement.AM_out(600, telemetry, AM);
+        sleep(500);
+        CL.setPosition(1);
+        sleep(500);
+        Movement.AM_in(100, telemetry, AM);
+        Movement.rotateLeft(90, telemetry, BL, BR, FL, FR);
+        Movement.LS_up(4000, telemetry, LSL, LSR);
+        sleep(500);
+        RT.setPosition(cl_up);
+        sleep(500);
+        CL.setPosition(0);
+        sleep(500);
+        RT.setPosition(cl_down);
 
+
+        /*
+        Movement.rotateRight(33, telemetry, BL, BR, FL, FR);
+        Movement.right(60, telemetry, BL, BR, FL, FR);
+        Movement.forward(15, telemetry, BL, BR, FL, FR);
+        Movement.rotateLeft(65,telemetry, BL, BR, FL, FR);
+        Movement.right(13, telemetry, BL, BR, FL, FR);
+        Movement.forward(7,telemetry, BL, BR, FL, FR);
+        Movement.AM_out(100, telemetry, AM);
+        sleep(1000);
+        CL.setPosition(0);
+        sleep(1000);
+        CL.setPosition(1);
+        sleep(1000);
+        */
+        /*
+        sleep(1500);
+        GK.setPower(0);
+        //Movement.forward(5, telemetry, BL, BR, FL, FR);
+        Movement.backward(5, telemetry, BL, BR, FL, FR);
+        Movement.left(50, telemetry, BL, BR, FL, FR);
+        //Movement.right(25, telemetry, BL, BR, FL, FR);
+        Movement.forward(25, telemetry, BL, BR, FL, FR);
+        Movement.rotateLeft(40, telemetry, BL, BR, FL, FR);
+        Movement.forward(12, telemetry, BL, BR, FL, FR); //rosheel changed this from 15 to 12 on satuarday
+        Movement.LS_up(7000, telemetry, LSL, LSR);
+        LSL.setPower(0.01);
+        LSR.setPower(0.01);
+        IR.setPosition(1);
         GK.setPower(-1);
-        sleep(3000);
-        IR.setPosition(-1);
-        LS_down(telemetry, LSL, LSR);
+        *///sleep(3000);
         //GK.setPower(1) //we need to import this at the top
         //wait                  releasing sample
         //GK.setPower(0)
@@ -121,20 +180,7 @@ public class Auto_Net extends LinearOpMode {
         Movement.left(a12_ml, telemetry, BL, BR, FL, FR);
         Movement.rotateLeft(a13_rl, telemetry, BL, BR, FL, FR);
         Movement.forward(a15_d, telemetry, BL, BR, FL, FR);
-        //intake
-        //stop intake
-        Movement.left(a17_d, telemetry, BL, BR, FL, FR);
-        Movement.rotateLeft(a18_r, telemetry, BL, BR, FL, FR);
-        //Movement.LS_up(a19_ls, telemetry, LSL, LSR);
-        Movement.forward(a20_d, telemetry, BL, BR, FL, FR);
-        //GK.setPower(1) //we need to import this at the top
-        //wait
-        //GK.setPower(0)
-        Movement.backward(a22_d, telemetry, BL, BR, FL, FR);
-        //Movement.LS_down(a23_ls, telemetry, LSL, LSR);
-        Movement.rotateRight(a24_r, telemetry, BL, BR, FL, FR);
-        Movement.backward(a25_d, telemetry, BL, BR, FL, FR);
-        Movement.left(a26_d, telemetry, BL, BR, FL, FR); //parked
+
 */
     }
 }
